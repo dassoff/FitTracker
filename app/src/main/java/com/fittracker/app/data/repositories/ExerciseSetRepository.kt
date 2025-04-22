@@ -9,10 +9,6 @@ import java.util.*
  * Репозиторий для работы с подходами упражнений
  */
 class ExerciseSetRepository(private val exerciseSetDao: ExerciseSetDao) {
-    fun getExerciseSets(exerciseId: Long): Flow<List<ExerciseSet>> {
-        return exerciseSetDao.getExerciseSets(exerciseId)
-    }
-    
     fun getSetsForWorkoutExercise(workoutExerciseId: Long): Flow<List<ExerciseSet>> {
         return exerciseSetDao.getSetsForWorkoutExercise(workoutExerciseId)
     }
