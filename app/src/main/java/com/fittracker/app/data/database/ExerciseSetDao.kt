@@ -22,7 +22,7 @@ interface ExerciseSetDao {
     @Delete
     suspend fun delete(exerciseSet: ExerciseSet)
 
-    @Query("UPDATE exercise_sets SET isCompleted = :completed, completedDate = :date WHERE id = :setId")
+    @Query("UPDATE exercise_sets SET completed = :completed, performedAt = :date WHERE id = :setId")
     suspend fun updateCompletionStatus(setId: Long, completed: Boolean, date: Date?)
 
     @Query("DELETE FROM exercise_sets WHERE workoutExerciseId = :exerciseId")
@@ -31,7 +31,7 @@ interface ExerciseSetDao {
     @Query("DELETE FROM exercise_sets WHERE workoutExerciseId = :workoutExerciseId")
     suspend fun deleteAllSetsForWorkoutExercise(workoutExerciseId: Long)
 
-    @Query("SELECT * FROM exercise_sets WHERE completedDate BETWEEN :startDate AND :endDate ORDER BY completedDate DESC")
+    @Query("SELECT * FROM exercise_sets WHERE performedAt BETWEEN :startDate AND :endDate ORDER BY performedAt DESC")
     fun getExerciseSetsByDateRange(startDate: Date, endDate: Date): LiveData<List<ExerciseSet>>
 
     @Query("SELECT COUNT(*) FROM exercise_sets WHERE workoutExerciseId = :exerciseId")
