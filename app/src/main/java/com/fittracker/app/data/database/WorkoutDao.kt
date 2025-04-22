@@ -10,13 +10,13 @@ import java.util.*
  */
 @Dao
 interface WorkoutDao {
-    @Query("SELECT * FROM workouts ORDER BY created DESC")
+    @Query("SELECT * FROM workouts ORDER BY name ASC")
     fun getAllWorkouts(): LiveData<List<Workout>>
 
     @Query("SELECT * FROM workouts WHERE isTemplate = 1 ORDER BY name ASC")
     fun getWorkoutTemplates(): LiveData<List<Workout>>
 
-    @Query("SELECT * FROM workouts WHERE isTemplate = 0 ORDER BY lastPerformed DESC")
+    @Query("SELECT * FROM workouts WHERE isTemplate = 0 ORDER BY dateCompleted DESC")
     fun getCompletedWorkouts(): LiveData<List<Workout>>
 
     @Query("SELECT * FROM workouts WHERE id = :id")
@@ -31,9 +31,9 @@ interface WorkoutDao {
     @Delete
     suspend fun delete(workout: Workout)
 
-    @Query("UPDATE workouts SET lastPerformed = :date WHERE id = :workoutId")
-    suspend fun updateLastPerformed(workoutId: Long, date: Date)
-
     @Query("SELECT * FROM workouts WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
     fun searchWorkouts(query: String): LiveData<List<Workout>>
+
+    @Query("UPDATE workouts SET lastPerformedDate = :date WHERE id = :workoutId")
+    suspend fun updateLastPerformedDate(workoutId: Long, date: Date)
 } 

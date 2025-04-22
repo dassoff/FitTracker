@@ -20,6 +20,10 @@ class WorkoutExerciseRepository(private val workoutExerciseDao: WorkoutExerciseD
     suspend fun insert(workoutExercise: WorkoutExercise): Long {
         return workoutExerciseDao.insert(workoutExercise)
     }
+    
+    suspend fun insertAll(workoutExercises: List<WorkoutExercise>): List<Long> {
+        return workoutExerciseDao.insertAll(workoutExercises)
+    }
 
     suspend fun update(workoutExercise: WorkoutExercise) {
         workoutExerciseDao.update(workoutExercise)
@@ -29,7 +33,7 @@ class WorkoutExerciseRepository(private val workoutExerciseDao: WorkoutExerciseD
         workoutExerciseDao.delete(workoutExercise)
     }
 
-    fun getExerciseById(id: Long): Flow<WorkoutExercise> {
+    suspend fun getExerciseById(id: Long): WorkoutExercise {
         return workoutExerciseDao.getExerciseById(id)
     }
 
