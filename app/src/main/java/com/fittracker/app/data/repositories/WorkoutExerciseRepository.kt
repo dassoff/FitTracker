@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import com.fittracker.app.data.database.WorkoutExerciseDao
 import com.fittracker.app.data.models.Exercise
 import com.fittracker.app.data.models.WorkoutExercise
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class WorkoutExerciseRepository @Inject constructor(
-    private val workoutExerciseDao: WorkoutExerciseDao
-) {
+/**
+ * Репозиторий для работы со связями тренировок и упражнений
+ */
+class WorkoutExerciseRepository(private val workoutExerciseDao: WorkoutExerciseDao) {
     fun getExercisesForWorkout(workoutId: Long): LiveData<List<WorkoutExercise>> {
         return workoutExerciseDao.getExercisesForWorkout(workoutId)
     }
