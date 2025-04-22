@@ -3,9 +3,19 @@ name: Android CI/CD
 on:
   push:
     branches: [ main ]
+    # Исключим изменения, не относящиеся к коду
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'docs/**'
   pull_request:
     branches: [ main ]
   workflow_dispatch:  # Позволяет запустить workflow вручную
+
+# Предотвращаем запуск параллельных сборок для одной и той же ветки
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -19,27 +29,57 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        cache: gradle
         
     - name: Make Gradle executable
       run: chmod +x ./gradlew
       
-    - name: Check Environment
+    - name: Check Environment and Print Diagnostic Info
       run: |
+        echo "============ ENVIRONMENT INFO ============"
         echo "JAVA_HOME: $JAVA_HOME"
         echo "Android SDK: $ANDROID_HOME"
+        echo "Java version:"
+        java -version
+        echo "Gradle version:"
+        ./gradlew --version
+        echo "Repository structure:"
         ls -la
+        echo "Gradle Wrapper:"
         ls -la gradle/wrapper/
+        echo "Android Manifest:"
+        cat app/src/main/AndroidManifest.xml
+        echo "build.gradle:"
+        cat app/build.gradle
+        echo "settings.gradle:"
+        cat settings.gradle
+        echo "==========================================="
         
     - name: Generate local.properties
       run: |
         echo "sdk.dir=$ANDROID_HOME" > local.properties
         cat local.properties
-        
+    
+    - name: Clean Gradle
+      run: ./gradlew clean --no-daemon --info
+      
     - name: Build debug APK
       run: ./gradlew assembleDebug --no-daemon --stacktrace
+      
+    - name: Run Lint
+      run: ./gradlew lint --no-daemon
+      continue-on-error: true
+      
+    - name: Upload lint report
+      uses: actions/upload-artifact@v4
+      with:
+        name: lint-report
+        path: app/build/reports/lint-results-debug.html
+      continue-on-error: true
       
     - name: Upload debug APK
       uses: actions/upload-artifact@v4
       with:
         name: debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk 
+        path: app/build/outputs/apk/debug/app-debug.apk
+      continue-on-error: true 

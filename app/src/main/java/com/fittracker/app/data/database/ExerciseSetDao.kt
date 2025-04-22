@@ -13,6 +13,9 @@ interface ExerciseSetDao {
     @Query("SELECT * FROM exercise_sets WHERE workoutExerciseId = :workoutExerciseId ORDER BY setNumber ASC")
     fun getSetsForWorkoutExercise(workoutExerciseId: Long): LiveData<List<ExerciseSet>>
     
+    @Query("SELECT * FROM exercise_sets WHERE id = :setId")
+    fun getSetById(setId: Long): LiveData<ExerciseSet>
+    
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(exerciseSets: List<ExerciseSet>)
 
