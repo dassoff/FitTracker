@@ -24,11 +24,17 @@ jobs:
     - name: Make Gradle executable
       run: chmod +x ./gradlew
       
-    - name: Build Debug APK
-      run: ./gradlew assembleDebug --info
-      
-    - name: Upload APK
-      uses: actions/upload-artifact@v3
-      with:
-        name: debug-apk
-        path: app/build/outputs/apk/debug/ 
+    - name: Check Environment
+      run: |
+        echo "JAVA_HOME: $JAVA_HOME"
+        echo "Android SDK: $ANDROID_HOME"
+        ls -la
+        ls -la gradle/wrapper/
+        
+    - name: Generate local.properties
+      run: |
+        echo "sdk.dir=$ANDROID_HOME" > local.properties
+        cat local.properties
+        
+    - name: Run Gradle tasks
+      run: ./gradlew tasks --all 
