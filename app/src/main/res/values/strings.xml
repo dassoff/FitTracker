@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">ФитТрекер</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Главная</string>
+    <string name="nav_exercises">Упражнения</string>
+    <string name="nav_workouts">Тренировки</string>
+    <string name="nav_progress">Прогресс</string>
+    <string name="nav_profile">Профиль</string>
+    
+    <!-- Common -->
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="edit">Редактировать</string>
+    
+    <!-- Exercise -->
+    <string name="exercise_name">Название упражнения</string>
+    <string name="exercise_description">Описание</string>
+    <string name="exercise_muscle_group">Группа мышц</string>
+    <string name="exercise_add">Добавить упражнение</string>
+    <string name="exercise_edit">Редактировать упражнение</string>
+    
+    <!-- Workouts -->
+    <string name="workout_create">Создать тренировку</string>
+    <string name="workout_name">Название тренировки</string>
+    <string name="workout_start">Начать тренировку</string>
+    <string name="workout_finish">Завершить тренировку</string>
+    <string name="workout_add_exercise">Добавить упражнение</string>
+    
+    <!-- Sets -->
+    <string name="set_weight">Вес (кг)</string>
+    <string name="set_reps">Повторения</string>
+    <string name="set_add">Добавить подход</string>
+    <string name="set_rest">Отдых (сек)</string>
+    
+    <!-- Profile -->
+    <string name="profile_name">Имя</string>
+    <string name="profile_height">Рост (см)</string>
+    <string name="profile_weight">Вес (кг)</string>
+    <string name="profile_goal">Цель</string>
+    <string name="profile_settings">Настройки</string>
+    
+    <!-- Auth -->
+    <string name="login">Войти</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+</resources> 
