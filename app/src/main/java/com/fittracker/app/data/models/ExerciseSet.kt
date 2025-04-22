@@ -17,17 +17,25 @@ import java.util.*
             parentColumns = ["id"],
             childColumns = ["workoutExerciseId"],
             onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Exercise::class,
+            parentColumns = ["id"],
+            childColumns = ["exerciseId"],
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index("workoutExerciseId")]
+    indices = [Index("workoutExerciseId"), Index("exerciseId"), Index("date")]
 )
 data class ExerciseSet(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val workoutExerciseId: Long,
+    val exerciseId: Long,
     val weight: Float, // вес в кг
     val reps: Int, // количество повторений
     val completed: Boolean = false,
     val performedAt: Date? = null, // дата выполнения
-    val orderNumber: Int // порядковый номер подхода
+    val setNumber: Int, // порядковый номер подхода
+    val date: Date = Date() // дата создания подхода
 ) 
