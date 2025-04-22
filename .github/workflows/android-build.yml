@@ -23,13 +23,22 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
       
+      - name: Check Environment
+        run: |
+          echo "JAVA_HOME: $JAVA_HOME"
+          echo "Android SDK: $ANDROID_HOME"
+          ls -la
+          ls -la gradle/wrapper/
+          cat settings.gradle
+          cat build.gradle
+      
       - name: Fix Gradle wrapper
         run: |
           chmod +x ./gradlew
           echo "sdk.dir=$ANDROID_HOME" > local.properties
       
       - name: Build APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
       
       - name: Upload debug APK
         uses: actions/upload-artifact@v2
