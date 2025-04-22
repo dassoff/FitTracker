@@ -6,6 +6,7 @@ plugins {
 
 android {
     compileSdk 33
+    namespace "com.fittracker.app"
 
     defaultConfig {
         applicationId "com.fittracker.app"
