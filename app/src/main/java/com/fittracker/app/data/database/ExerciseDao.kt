@@ -26,10 +26,10 @@ interface ExerciseDao {
     suspend fun insert(exercise: Exercise): Long
 
     @Update
-    suspend fun update(exercise: Exercise)
+    suspend fun update(exercise: Exercise): Int
 
     @Delete
-    suspend fun delete(exercise: Exercise)
+    suspend fun delete(exercise: Exercise): Int
 
     @Query("SELECT * FROM exercises WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
     fun searchExercises(query: String): LiveData<List<Exercise>>

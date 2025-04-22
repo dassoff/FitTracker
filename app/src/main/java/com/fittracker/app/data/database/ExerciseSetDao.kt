@@ -17,22 +17,22 @@ interface ExerciseSetDao {
     fun getSetById(setId: Long): LiveData<ExerciseSet>
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(exerciseSets: List<ExerciseSet>)
+    suspend fun insertAll(exerciseSets: List<ExerciseSet>): List<Long>
 
     @Update
-    suspend fun update(exerciseSet: ExerciseSet)
+    suspend fun update(exerciseSet: ExerciseSet): Int
 
     @Delete
-    suspend fun delete(exerciseSet: ExerciseSet)
+    suspend fun delete(exerciseSet: ExerciseSet): Int
 
     @Query("UPDATE exercise_sets SET completed = :completed, performedAt = :date WHERE id = :setId")
-    suspend fun updateCompletionStatus(setId: Long, completed: Boolean, date: Date?)
+    suspend fun updateCompletionStatus(setId: Long, completed: Boolean, date: Date?): Int
 
     @Query("DELETE FROM exercise_sets WHERE workoutExerciseId = :exerciseId")
-    suspend fun deleteAllSetsForExercise(exerciseId: Long)
+    suspend fun deleteAllSetsForExercise(exerciseId: Long): Int
     
     @Query("DELETE FROM exercise_sets WHERE workoutExerciseId = :workoutExerciseId")
-    suspend fun deleteAllSetsForWorkoutExercise(workoutExerciseId: Long)
+    suspend fun deleteAllSetsForWorkoutExercise(workoutExerciseId: Long): Int
 
     @Query("SELECT * FROM exercise_sets WHERE performedAt BETWEEN :startDate AND :endDate ORDER BY performedAt DESC")
     fun getExerciseSetsByDateRange(startDate: Date, endDate: Date): LiveData<List<ExerciseSet>>
@@ -44,8 +44,8 @@ interface ExerciseSetDao {
     suspend fun getWorkoutExerciseSetCount(workoutExerciseId: Long): Int
     
     @Query("UPDATE exercise_sets SET setNumber = setNumber - 1 WHERE workoutExerciseId = :exerciseId AND setNumber > :position")
-    suspend fun reorderAfterDelete(exerciseId: Long, position: Int)
+    suspend fun reorderAfterDelete(exerciseId: Long, position: Int): Int
     
     @Query("UPDATE exercise_sets SET setNumber = setNumber - 1 WHERE workoutExerciseId = :workoutExerciseId AND setNumber > :position")
-    suspend fun reorderAfterDeleteInWorkout(workoutExerciseId: Long, position: Int)
+    suspend fun reorderAfterDeleteInWorkout(workoutExerciseId: Long, position: Int): Int
 } 

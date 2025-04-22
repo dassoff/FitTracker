@@ -16,7 +16,7 @@ interface WorkoutDao {
     @Query("SELECT * FROM workouts WHERE isTemplate = 1 ORDER BY name ASC")
     fun getWorkoutTemplates(): LiveData<List<Workout>>
 
-    @Query("SELECT * FROM workouts WHERE isTemplate = 0 ORDER BY dateCompleted DESC")
+    @Query("SELECT * FROM workouts WHERE isTemplate = 0 ORDER BY lastPerformedDate DESC")
     fun getCompletedWorkouts(): LiveData<List<Workout>>
 
     @Query("SELECT * FROM workouts WHERE id = :id")
@@ -26,14 +26,14 @@ interface WorkoutDao {
     suspend fun insert(workout: Workout): Long
 
     @Update
-    suspend fun update(workout: Workout)
+    suspend fun update(workout: Workout): Int
 
     @Delete
-    suspend fun delete(workout: Workout)
+    suspend fun delete(workout: Workout): Int
 
     @Query("SELECT * FROM workouts WHERE name LIKE '%' || :query || '%' ORDER BY name ASC")
     fun searchWorkouts(query: String): LiveData<List<Workout>>
 
     @Query("UPDATE workouts SET lastPerformedDate = :date WHERE id = :workoutId")
-    suspend fun updateLastPerformedDate(workoutId: Long, date: Date)
+    suspend fun updateLastPerformedDate(workoutId: Long, date: Date): Int
 } 

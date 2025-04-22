@@ -13,13 +13,13 @@ interface UserDao {
     fun getUserById(userId: String): LiveData<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(user: User)
+    suspend fun insert(user: User): Long
 
     @Update
-    suspend fun update(user: User)
+    suspend fun update(user: User): Int
 
     @Delete
-    suspend fun delete(user: User)
+    suspend fun delete(user: User): Int
 
     @Query("SELECT * FROM users LIMIT 1")
     fun getCurrentUser(): LiveData<User?>
