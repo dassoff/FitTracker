@@ -1,6 +1,6 @@
 package com.fittracker.app.data.repositories
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import com.fittracker.app.data.database.ExerciseSetDao
 import com.fittracker.app.data.models.ExerciseSet
 import java.util.*
@@ -9,55 +9,57 @@ import java.util.*
  * Репозиторий для работы с подходами упражнений
  */
 class ExerciseSetRepository(private val exerciseSetDao: ExerciseSetDao) {
-    fun getExerciseSets(exerciseId: Long): LiveData<List<ExerciseSet>> {
+    fun getExerciseSets(exerciseId: Long): Flow<List<ExerciseSet>> {
         return exerciseSetDao.getExerciseSets(exerciseId)
     }
     
-    fun getSetsForWorkoutExercise(workoutExerciseId: Long): LiveData<List<ExerciseSet>> {
+    fun getSetsForWorkoutExercise(workoutExerciseId: Long): Flow<List<ExerciseSet>> {
         return exerciseSetDao.getSetsForWorkoutExercise(workoutExerciseId)
     }
 
-    suspend fun insert(exerciseSet: ExerciseSet): Long {
-        return exerciseSetDao.insert(exerciseSet)
+    suspend fun insertAll(exerciseSets: List<ExerciseSet>) {
+        exerciseSetDao.insertAll(exerciseSets)
     }
 
-    suspend fun update(exerciseSet: ExerciseSet): Int {
-        return exerciseSetDao.update(exerciseSet)
+    suspend fun update(exerciseSet: ExerciseSet) {
+        exerciseSetDao.update(exerciseSet)
     }
 
-    suspend fun delete(exerciseSet: ExerciseSet): Int {
-        val result = exerciseSetDao.delete(exerciseSet)
+    suspend fun delete(exerciseSet: ExerciseSet) {
+        exerciseSetDao.delete(exerciseSet)
         exerciseSetDao.reorderAfterDelete(exerciseSet.exerciseId, exerciseSet.setNumber)
-        return result
     }
     
-    suspend fun deleteForWorkoutExercise(exerciseSet: ExerciseSet): Int {
-        val result = exerciseSetDao.delete(exerciseSet)
+    suspend fun deleteForWorkoutExercise(exerciseSet: ExerciseSet) {
+        exerciseSetDao.delete(exerciseSet)
         exerciseSetDao.reorderAfterDeleteInWorkout(exerciseSet.workoutExerciseId, exerciseSet.setNumber)
-        return result
     }
 
     suspend fun updateCompletionStatus(setId: Long, completed: Boolean, date: Date? = if (completed) Date() else null): Int {
         return exerciseSetDao.updateCompletionStatus(setId, completed, date)
     }
 
-    suspend fun deleteAllSetsForExercise(exerciseId: Long): Int {
-        return exerciseSetDao.deleteAllSetsForExercise(exerciseId)
+    suspend fun deleteAllSetsForExercise(exerciseId: Long) {
+        exerciseSetDao.deleteAllSetsForExercise(exerciseId)
     }
     
-    suspend fun deleteAllSetsForWorkoutExercise(workoutExerciseId: Long): Int {
-        return exerciseSetDao.deleteAllSetsForWorkoutExercise(workoutExerciseId)
+    suspend fun deleteAllSetsForWorkoutExercise(workoutExerciseId: Long) {
+        exerciseSetDao.deleteAllSetsForWorkoutExercise(workoutExerciseId)
     }
 
-    fun getExerciseSetsByDateRange(startDate: Date, endDate: Date): LiveData<List<ExerciseSet>> {
+    fun getExerciseSetsByDateRange(startDate: Date, endDate: Date): Flow<List<ExerciseSet>> {
         return exerciseSetDao.getExerciseSetsByDateRange(startDate, endDate)
     }
 
-    suspend fun getSetCount(exerciseId: Long): Int {
+    fun getSetCount(exerciseId: Long): Flow<Int> {
         return exerciseSetDao.getSetCount(exerciseId)
     }
     
     suspend fun getWorkoutExerciseSetCount(workoutExerciseId: Long): Int {
         return exerciseSetDao.getWorkoutExerciseSetCount(workoutExerciseId)
+    }
+
+    suspend fun reorderAfterDelete(exerciseId: Long, position: Int) {
+        exerciseSetDao.reorderAfterDelete(exerciseId, position)
     }
 } 

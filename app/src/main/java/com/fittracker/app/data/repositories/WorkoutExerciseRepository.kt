@@ -1,6 +1,6 @@
 package com.fittracker.app.data.repositories
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import com.fittracker.app.data.database.WorkoutExerciseDao
 import com.fittracker.app.data.models.Exercise
 import com.fittracker.app.data.models.WorkoutExercise
@@ -9,11 +9,11 @@ import com.fittracker.app.data.models.WorkoutExercise
  * Репозиторий для работы со связями тренировок и упражнений
  */
 class WorkoutExerciseRepository(private val workoutExerciseDao: WorkoutExerciseDao) {
-    fun getExercisesForWorkout(workoutId: Long): LiveData<List<WorkoutExercise>> {
+    fun getExercisesForWorkout(workoutId: Long): Flow<List<WorkoutExercise>> {
         return workoutExerciseDao.getExercisesForWorkout(workoutId)
     }
 
-    fun getExerciseDetailsByWorkoutId(workoutId: Long): LiveData<List<Exercise>> {
+    fun getExerciseDetailsByWorkoutId(workoutId: Long): Flow<List<Exercise>> {
         return workoutExerciseDao.getExerciseDetailsByWorkoutId(workoutId)
     }
 
@@ -21,18 +21,23 @@ class WorkoutExerciseRepository(private val workoutExerciseDao: WorkoutExerciseD
         return workoutExerciseDao.insert(workoutExercise)
     }
 
-    suspend fun update(workoutExercise: WorkoutExercise): Int {
-        return workoutExerciseDao.update(workoutExercise)
+    suspend fun update(workoutExercise: WorkoutExercise) {
+        workoutExerciseDao.update(workoutExercise)
     }
 
-    suspend fun delete(workoutExercise: WorkoutExercise): Int {
-        val result = workoutExerciseDao.delete(workoutExercise)
-        // Перенумеруем оставшиеся упражнения
-        workoutExerciseDao.reorderAfterDelete(workoutExercise.workoutId, workoutExercise.orderNumber)
-        return result
+    suspend fun delete(workoutExercise: WorkoutExercise) {
+        workoutExerciseDao.delete(workoutExercise)
     }
 
-    suspend fun deleteAllExercisesForWorkout(workoutId: Long): Int {
-        return workoutExerciseDao.deleteAllExercisesForWorkout(workoutId)
+    fun getExerciseById(id: Long): Flow<WorkoutExercise> {
+        return workoutExerciseDao.getExerciseById(id)
+    }
+
+    suspend fun deleteAllExercisesForWorkout(workoutId: Long) {
+        workoutExerciseDao.deleteAllExercisesForWorkout(workoutId)
+    }
+
+    suspend fun reorderAfterDelete(workoutId: Long, position: Int) {
+        workoutExerciseDao.reorderAfterDelete(workoutId, position)
     }
 } 
