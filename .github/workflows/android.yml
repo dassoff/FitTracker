@@ -1,16 +1,15 @@
-name: Android Build
+name: Android CI/CD
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:
+  workflow_dispatch:  # Позволяет запустить workflow вручную
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -37,4 +36,13 @@ jobs:
         cat local.properties
         
     - name: Run Gradle tasks
-      run: ./gradlew tasks --all 
+      run: ./gradlew tasks --all
+      
+    - name: Build debug APK
+      run: ./gradlew assembleDebug --no-daemon --stacktrace
+      
+    - name: Upload debug APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk 
