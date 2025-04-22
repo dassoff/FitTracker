@@ -27,7 +27,7 @@ class ExerciseSetRepository(private val exerciseSetDao: ExerciseSetDao) {
 
     suspend fun delete(exerciseSet: ExerciseSet) {
         exerciseSetDao.delete(exerciseSet)
-        exerciseSetDao.reorderAfterDelete(exerciseSet.exerciseId, exerciseSet.setNumber)
+        exerciseSetDao.reorderAfterDelete(exerciseSet.workoutExerciseId, exerciseSet.setNumber)
     }
     
     suspend fun deleteForWorkoutExercise(exerciseSet: ExerciseSet) {
@@ -35,8 +35,8 @@ class ExerciseSetRepository(private val exerciseSetDao: ExerciseSetDao) {
         exerciseSetDao.reorderAfterDeleteInWorkout(exerciseSet.workoutExerciseId, exerciseSet.setNumber)
     }
 
-    suspend fun updateCompletionStatus(setId: Long, completed: Boolean, date: Date? = if (completed) Date() else null): Int {
-        return exerciseSetDao.updateCompletionStatus(setId, completed, date)
+    suspend fun updateCompletionStatus(setId: Long, completed: Boolean, date: Date? = if (completed) Date() else null) {
+        exerciseSetDao.updateCompletionStatus(setId, completed, date)
     }
 
     suspend fun deleteAllSetsForExercise(exerciseId: Long) {
